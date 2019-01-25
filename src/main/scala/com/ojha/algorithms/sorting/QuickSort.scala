@@ -8,17 +8,12 @@ object QuickSort {
     copy
   }
 
-  private def swap(a: Array[Int], i: Int, j: Int): Unit = {
-    val t = a(i); a(i) = a(j); a(j) = t
-  }
-
   private def go(a: Array[Int], l: Int, r: Int): Unit = {
     if (l < r) {
       val p = partition(a, l, r)
       go(a, l, p - 1)
       go(a, p + 1, r)
     }
-
   }
 
   private def partition(a: Array[Int], l: Int, r: Int): Int = {
@@ -34,5 +29,8 @@ object QuickSort {
     i
   }
 
+  private def swap(a: Array[Int], i: Int, j: Int): Unit = {
+    val t = a(i); a(i) = a(j); a(j) = t
+  }
 
 }
