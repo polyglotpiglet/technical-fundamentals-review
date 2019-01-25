@@ -35,4 +35,10 @@ class TreeSpec extends FlatSpec {
     assert(tree.iterativeInorderDfs() == expected)
   }
 
+  "Trees" should "do a postorder dfs" in {
+    val expected = Seq(4, 5, 2, 6, 3, 1)
+    assert(tree.recursivePostorderDfs() == expected)
+    assert(tree.iterativePostorderDfs() == expected)
+  }
+
 }

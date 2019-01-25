@@ -6,10 +6,44 @@ case class TreeNode[T](value: T, left: Option[TreeNode[T]] = None, right: Option
 
 object TreeNode {
   def treeNode[T](value: T, left: TreeNode[T], right: TreeNode[T]): TreeNode[T] = TreeNode(value, Some(left), Some(right))
+
   def treeNode[T](value: T, left: TreeNode[T]): TreeNode[T] = TreeNode(value, Some(left))
 }
 
 case class Tree[T](root: TreeNode[T]) {
+
+  def iterativePostorderDfs(): Seq[T] = iterativePostorderDfs(root)
+
+  private def iterativePostorderDfs(node: TreeNode[T]): Seq[T] = {
+    var result = Seq.empty[T]
+    val stack = new mutable.ArrayStack[TreeNode[T]]()
+    var visited = Set.empty[TreeNode[T]]
+    stack.push(root)
+
+    while (stack.nonEmpty) {
+      val current = stack.pop()
+      if ((current.left.isDefined && !visited.contains(current.left.get)) || (current.right.isDefined && !visited.contains(current.right.get))) {
+        stack.push(current)
+        current.right.foreach(right => stack.push(right))
+        current.left.foreach(left => stack.push(left))
+      }
+      else {
+        result = result :+ current.value
+        visited = visited + current
+      }
+    }
+    result
+
+  }
+
+  def recursivePostorderDfs(): Seq[T] = recursivePostorderDfs(root)
+
+  private def recursivePostorderDfs(node: TreeNode[T], results: Seq[T] = Seq.empty): Seq[T] = {
+    val leftUpdated = node.left.map(left => recursivePostorderDfs(left, results)).getOrElse(results)
+    val rightUpdated = node.right.map(right => recursivePostorderDfs(right, leftUpdated)).getOrElse(leftUpdated)
+    rightUpdated :+ node.value
+  }
+
   def iterativeInorderDfs(): Seq[T] = {
     var result = Seq.empty[T]
     val stack = new mutable.ArrayStack[TreeNode[T]]()
